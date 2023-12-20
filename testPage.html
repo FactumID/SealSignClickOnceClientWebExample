@@ -48,10 +48,10 @@
     <script type="text/javascript">
         var tid;
         $('#startsignature').prop( "disabled", true );
-	$('#startenrollment').prop( "disabled", true );
+		$('#startenrollment').prop( "disabled", true );
         $('#setclearimage').prop( "disabled", true );
         $('#startdigitalsignature').prop( "disabled", true );
-	$('#startdigitalmultisignature').prop( "disabled", true );
+		$('#startdigitalmultisignature').prop( "disabled", true );
         $('#addHashfilter').prop( "disabled", true );
         $('#addSerialfilter').prop( "disabled", true );
         $('#adddniefilter').prop( "disabled", true );
@@ -87,6 +87,8 @@
             $.connection.hub.url = "http://localhost:8081/signalr";
             // Declare a proxy to reference the hub.
             var hub = $.connection.sealSignHub;
+			
+			//Deprecated
             hub.client.Navigate = function (url) {                
                 //$.connection.hub.stop();
                 console.log("Navigate function called with params: " + url);
@@ -103,8 +105,8 @@
                 console.log("AsyncOperationCompleted called");
             };       
 			
-	    hub.client.AsyncOperationInProgress = function(message){
-		$('#messages').append(message + "\n");
+			hub.client.AsyncOperationInProgress = function(message){
+				$('#messages').append(message + "\n");
                 console.log(message);
             };  
 					
@@ -115,7 +117,7 @@
 					$('#startenrollment').prop( "disabled", false );
                     $('#setclearimage').prop( "disabled", false );
                     $('#startdigitalsignature').prop( "disabled", false );
-		    $('#startdigitalmultisignature').prop( "disabled", false );
+					$('#startdigitalmultisignature').prop( "disabled", false );
                     $('#adddniefilter').prop( "disabled", false );
                     $('#addHashfilter').prop( "disabled", false );
                     $('#addSerialfilter').prop( "disabled", false );
@@ -123,15 +125,15 @@
                     $('#clearLocalCertificate').prop( "disabled", false );
                     $('#resetCertificateFilters').prop( "disabled", false );
                     $('#configureDSSRemoteProvider').prop( "disabled", false );
-        	    $('#resetDSSRemoteProvider').prop( "disabled", false );
-        	    $('#configureBSSRemoteProvider').prop( "disabled", false );
-    		    $('#resetBSSRemoteProvider').prop( "disabled", false );
+					$('#resetDSSRemoteProvider').prop( "disabled", false );
+					$('#configureBSSRemoteProvider').prop( "disabled", false );
+					$('#resetBSSRemoteProvider').prop( "disabled", false );
                 } else {
                     $('#startsignature').prop( "disabled", true );
-		    $('#startenrollment').prop( "disabled", true );
+					$('#startenrollment').prop( "disabled", true );
                     $('#setclearimage').prop( "disabled", true );    
                     $('#startdigitalsignature').prop( "disabled", true );
-	            $('#startdigitalmultisignature').prop( "disabled", true );
+					$('#startdigitalmultisignature').prop( "disabled", true );
                     $('#adddniefilter').prop( "disabled", true );
                     $('#addHashfilter').prop( "disabled", true );
                     $('#addSerialfilter').prop( "disabled", true );
@@ -139,21 +141,21 @@
                     $('#clearLocalCertificate').prop( "disabled", true );
                     $('#resetCertificateFilters').prop( "disabled", true );
                     $('#configureDSSRemoteProvider').prop( "disabled", true );
-        	    $('#resetDSSRemoteProvider').prop( "disabled", true );
-        	    $('#configureBSSRemoteProvider').prop( "disabled", true );
+					$('#resetDSSRemoteProvider').prop( "disabled", true );
+					$('#configureBSSRemoteProvider').prop( "disabled", true );
                     $('#resetBSSRemoteProvider').prop( "disabled", true );
                 }                
             });
 		
             // Start the connection.
-            $.connection.hub.start({ transport: 'longPolling' }).done(function () {
+            $.connection.hub.start({ transport: 'webSockets' }).done(function () {
                 hub.server.setServerVersion('V40');
                 $(window).unbind("beforeunload");           
                 $('#startsignature').prop( "disabled", false );
-		$('#startenrollment').prop( "disabled", false );
+				$('#startenrollment').prop( "disabled", false );
                 $('#setclearimage').prop( "disabled", false );
                 $('#startdigitalsignature').prop( "disabled", false );
-		$('#startdigitalmultisignature').prop( "disabled", false );
+				$('#startdigitalmultisignature').prop( "disabled", false );
                 $('#adddniefilter').prop( "disabled", false );
                 $('#addhashfilter').prop( "disabled", false );
                 $('#addSerialfilter').prop( "disabled", false );
@@ -161,9 +163,9 @@
                 $('#clearLocalCertificate').prop( "disabled", false );
                 $('#resetCertificateFilters').prop( "disabled", false );
                 $('#configureDSSRemoteProvider').prop( "disabled", false );
-        	$('#resetDSSRemoteProvider').prop( "disabled", false );
-        	$('#configureBSSRemoteProvider').prop( "disabled", false );
-        	$('#resetBSSRemoteProvider').prop( "disabled", false );
+				$('#resetDSSRemoteProvider').prop( "disabled", false );
+				$('#configureBSSRemoteProvider').prop( "disabled", false );
+				$('#resetBSSRemoteProvider').prop( "disabled", false );
 
                 $('#setclearimage').click(function(){
                     //hub.server.setClearImageUrl('http://www.cultture.com/pics/2015/12/poil00.jpg');
@@ -197,49 +199,49 @@
                     "", // 21: Botón Rechazar – en todas las pantallas
                     "Por favor, firme en la pantalla inferior", // 22: Texto OPCIONAL superior en la pantalla de firma
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
-			"<screens>" + 
-				"<screen id=\"screen1\">" + 
-					"<text id=\"Label1\">" +
-						"<label color=\"#003A8C\">Vd. Pepito perez va a generar su firma electrónica sobre el contenido del documento con referencia [], cuyo contenido, ha leido y autoriza expresamente.</label>" +
-					"</text>" + 
-					"<checkbox id=\"chk1\" mandatory=\"1\">" + 
-						"<label color=\"#003A8C\">Marcar para continuar</label>" + 
-						"<value>0</value>" + 
-					"</checkbox>" +
-				"</screen>" +
-				"<screen id=\"screen2\">" +
-					"<text id=\"Label1\">" + 
-						"<label color=\"#003A8C\">Vd. CONSIENTE, de forma informada, previa y expresa, el tratamiento de datos de carácter personal, así como las cesiones a y de terceros previstas en el documento con referencia []</label>" + 
-					"</text>" + 
-					"<checkbox id=\"chk1\" mandatory=\"1\">" + 
-						"<label color=\"#003A8C\">Marcar para continuar</label>" + 
-						"<value>0</value>" + 
-					"</checkbox>" + 
-				"</screen>" + 
-			"</screens>", // 23: Pantallas de pasos previos a la firma 
-		   "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
-			"<screens>" + 
-				"<screen id=\"screen1\">" + 
-					"<title align=\"center\" color=\"#003A8C\" fontfamily=\"Arial\" fontsize=\"20\" bold=\"true\">Contrato</title>" +
-					"<logo id=\"logo\" align=\"right\">https://www.toshibatec-tsis.com/soluciones/imagenes/sealsign-logo.png</logo>" +
-					"<content spacelines=\"30\">" +
-						"<row align=\"left\" spacelines=\"1\">" +
-							"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\" bold=\"true\">Cuenta:</label>" +
-							"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\">         ES66 3001 0001 5701 4201 4547</label>" +
-						"</row>" +
-						"<row align=\"left\" spacelines=\"1\">" +
-							"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\" bold=\"true\">Documento:</label>" +
-							"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\">      Ficha INE Tarjeta</label>" +
-						"</row>" +
-						"<row align=\"left\" spacelines=\"1\">" +
-							"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\" bold=\"true\">Identificador:</label>" +
-							"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\">  ybgtxqArzC</label>" +
-						"</row>" +
-					"</content>" + 
-				"</screen>" + 
-			"</screens>", //24 pantalla de firma
-		   "{\"fontfamily\":\"Verdana\", \"fontsize\":\"16\", \"windowwidth\":\"600\", \"windowheight\":\"400\" }" // 25: Tipo de letra y tamaño de las pantallas de firma 
-		  ]);                    
+					"<screens>" + 
+						"<screen id=\"screen1\">" + 
+							"<text id=\"Label1\">" +
+								"<label color=\"#003A8C\">Vd. Pepito perez va a generar su firma electrónica sobre el contenido del documento con referencia [], cuyo contenido, ha leido y autoriza expresamente.</label>" +
+							"</text>" + 
+							"<checkbox id=\"chk1\" mandatory=\"1\">" + 
+								"<label color=\"#003A8C\">Marcar para continuar</label>" + 
+								"<value>0</value>" + 
+							"</checkbox>" +
+						"</screen>" +
+						"<screen id=\"screen2\">" +
+							"<text id=\"Label1\">" + 
+								"<label color=\"#003A8C\">Vd. CONSIENTE, de forma informada, previa y expresa, el tratamiento de datos de carácter personal, así como las cesiones a y de terceros previstas en el documento con referencia []</label>" + 
+							"</text>" + 
+							"<checkbox id=\"chk1\" mandatory=\"1\">" + 
+								"<label color=\"#003A8C\">Marcar para continuar</label>" + 
+								"<value>0</value>" + 
+							"</checkbox>" + 
+						"</screen>" + 
+					"</screens>", // 23: Pantallas de pasos previos a la firma 
+				   "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
+					"<screens>" + 
+						"<screen id=\"screen1\">" + 
+							"<title align=\"center\" color=\"#003A8C\" fontfamily=\"Arial\" fontsize=\"20\" bold=\"true\">Contrato</title>" +
+							"<logo id=\"logo\" align=\"right\">https://www.toshibatec-tsis.com/soluciones/imagenes/sealsign-logo.png</logo>" +
+							"<content spacelines=\"30\">" +
+								"<row align=\"left\" spacelines=\"1\">" +
+									"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\" bold=\"true\">Cuenta:</label>" +
+									"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\">         ES66 3001 0001 5701 4201 4547</label>" +
+								"</row>" +
+								"<row align=\"left\" spacelines=\"1\">" +
+									"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\" bold=\"true\">Documento:</label>" +
+									"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\">      Ficha INE Tarjeta</label>" +
+								"</row>" +
+								"<row align=\"left\" spacelines=\"1\">" +
+									"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\" bold=\"true\">Identificador:</label>" +
+									"<label fontfamily=\"Courier New\" fontsize=\"14\" color=\"#000000\">  ybgtxqArzC</label>" +
+								"</row>" +
+							"</content>" + 
+						"</screen>" + 
+					"</screens>", //24 pantalla de firma
+				   "{\"fontfamily\":\"Verdana\", \"fontsize\":\"16\", \"windowwidth\":\"600\", \"windowheight\":\"400\" }" // 25: Tipo de letra y tamaño de las pantallas de firma 
+				  ]);                    
                 });
 
                 $('#loadLocalCertificate').click(function() {                    
@@ -253,12 +255,15 @@
                 $('#adddniefilter').click(function() {
                     hub.server.setCertificateIssuerFilter('AC DNIE 001');
                 });
+				
                 $('#addHashfilter').click(function() {
                     hub.server.setCertificateHashFilter('‎f4210fbe804be5233fad3e844fc1793ad2f59ed9');
                 });
+				
                 $('#addSerialfilter').click(function() {
                     hub.server.setCertificateSerialFilter('‎0b5f4af494341a2457500fa988024c5d');
-                });   
+                });
+				
                 $('#resetCertificateFilters').click(function() {                    
                     hub.server.resetCertificateFilters();
                 });
@@ -267,60 +272,60 @@
                     hub.server.digitalSign([
                         "demo://y:/proyectos/sealsign/samples/sample.pdf", // 0: URI del documento
                         "http://localhost:8733/sealsigndssservice/distributedsignatureservicebasic.svc/BB", // 1: URL del servicio
-			"http://localhost/BSSWebTestClient/pageOK.html", // 1: URL de exito
-			"http://localhost/BSSWebTestClient/pageKO.html", // 2: URL de error
-			"http://localhost/BSSWebTestClient/pageCANCEL.html", // 3: URL de cancelacion
+						"http://localhost/BSSWebTestClient/pageOK.html", // 1: URL de exito
+						"http://localhost/BSSWebTestClient/pageKO.html", // 2: URL de error
+						"http://localhost/BSSWebTestClient/pageCANCEL.html", // 3: URL de cancelacion
                         null, // 5: Usuario de autenticacion basica
                         null // 6: Contraseña de autenticacion basica
                     ]);
                 });
 				
-		$('#startdigitalmultisignature').click(function () {
-		    hub.server.digitalMultiSign(
-			["demo://C:/Users/Test/Documents/Documentation/DOCUMENTOS DE PRUEBA/Firmados/reintegro_1601.pdf&FileName=reintegro_1601"],
-			["http://localhost:8733/SealSignDSSService/DistributedSignatureServiceBasic.svc/BB", // 1: URL del servicio
-			null, // 9: Usuario de autenticacion basica
-			null] // 10: Contraseña de autenticacion basica
-		    ); 
-                });
-				
-		$('#startenrollment').click(function () {
-		    hub.server.bioEnrollment([
-                        "http://localhost:8733/SealSignBASService/BiometricAuthenticationServiceBasic.svc/BB", // 0: URL del servicio
-			"http://localhost/BSSWebTestClient/pageOK.html", // 1: URL de exito
-			"http://localhost/BSSWebTestClient/pageKO.html", // 2: URL de error
-			"http://localhost/BSSWebTestClient/pageCANCEL.html", // 3: URL de cancelacion
-			null, // 4: Usuario de autenticacion basica del servicio
-			null, // 5: Contraseña de autenticacion basica del servicio
-			"11111111-C", // 6: Usuario al que se le hara el enrollment (Opcional)
-			"Cancelar", // 7: Botón Cancelar - en todas las pantallas
-			"Borrar", // 8: Botón Borrar – en todas las pantallas
-			"Firmar", // 9: Botón Guardar – en todas las pantallas
-			"{" + // 10: Tipo de letra y tamaño de las pantallas de firma 
-				"\"fontfamily\":\"TelefonicaWeb-Regular\", " +
-				"\"fontsize\":\"16\", " +
-				"\"fontcolor\":\"#0b4485\", " +
-				"\"windowwidth\":\"800\", " +
-				"\"windowheight\":\"480\", " +
-				"\"backgroundcolor\":\"#FFFBBB\""+
-			"}", 
-			"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + // 11: Pantalla de Enrollment
-			"<screens>" + 
-				"<screen id=\"screen1\">" + 
-					"<title align=\"center\" color=\"#FF0000\" fontsize=\"18\" spacelines=\"15\">ENROLLMENT PRESENCIAL</title>" +
-					"<logo>https://www.toshibatec-tsis.com/soluciones/imagenes/sealsign-logo.png</logo>" +
-					"<content>" + 
-						"<row align=\"left\" spacelines=\"10\">" +
-							"<label fontsize=\"14\" color=\"#003A8C\" bold=\"true\">TITULAR:</label>" + 
-							"<label fontsize=\"14\" color=\"#003A8C\"> Usurio Prueba</label>" + 
-						"</row>" +		
-						"<row align=\"left\" spacelines=\"1\">" +
-							"<label fontsize=\"14\" color=\"#003A8C\" bold=\"true\">NIF:</label>" + 
-							"<label fontsize=\"14\" color=\"#003A8C\"> '11111111-C'</label>" + 
-						"</row>" +		
-					"</content>" + 
-				"</screen>" + 
-			"</screens>"
+				$('#startdigitalmultisignature').click(function () {
+					hub.server.digitalMultiSign(
+					["demo://C:/Users/Test/Documents/Documentation/DOCUMENTOS DE PRUEBA/Firmados/reintegro_1601.pdf&FileName=reintegro_1601"],
+					["http://localhost:8733/SealSignDSSService/DistributedSignatureServiceBasic.svc/BB", // 1: URL del servicio
+					null, // 9: Usuario de autenticacion basica
+					null] // 10: Contraseña de autenticacion basica
+					); 
+						});
+						
+				$('#startenrollment').click(function () {
+					hub.server.bioEnrollment([
+								"http://localhost:8733/SealSignBASService/BiometricAuthenticationServiceBasic.svc/BB", // 0: URL del servicio
+					"http://localhost/BSSWebTestClient/pageOK.html", // 1: URL de exito
+					"http://localhost/BSSWebTestClient/pageKO.html", // 2: URL de error
+					"http://localhost/BSSWebTestClient/pageCANCEL.html", // 3: URL de cancelacion
+					null, // 4: Usuario de autenticacion basica del servicio
+					null, // 5: Contraseña de autenticacion basica del servicio
+					"11111111-C", // 6: Usuario al que se le hara el enrollment (Opcional)
+					"Cancelar", // 7: Botón Cancelar - en todas las pantallas
+					"Borrar", // 8: Botón Borrar – en todas las pantallas
+					"Firmar", // 9: Botón Guardar – en todas las pantallas
+					"{" + // 10: Tipo de letra y tamaño de las pantallas de firma 
+						"\"fontfamily\":\"TelefonicaWeb-Regular\", " +
+						"\"fontsize\":\"16\", " +
+						"\"fontcolor\":\"#0b4485\", " +
+						"\"windowwidth\":\"800\", " +
+						"\"windowheight\":\"480\", " +
+						"\"backgroundcolor\":\"#FFFBBB\""+
+					"}", 
+					"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + // 11: Pantalla de Enrollment
+					"<screens>" + 
+						"<screen id=\"screen1\">" + 
+							"<title align=\"center\" color=\"#FF0000\" fontsize=\"18\" spacelines=\"15\">ENROLLMENT PRESENCIAL</title>" +
+							"<logo>https://www.toshibatec-tsis.com/soluciones/imagenes/sealsign-logo.png</logo>" +
+							"<content>" + 
+								"<row align=\"left\" spacelines=\"10\">" +
+									"<label fontsize=\"14\" color=\"#003A8C\" bold=\"true\">TITULAR:</label>" + 
+									"<label fontsize=\"14\" color=\"#003A8C\"> Usurio Prueba</label>" + 
+								"</row>" +		
+								"<row align=\"left\" spacelines=\"1\">" +
+									"<label fontsize=\"14\" color=\"#003A8C\" bold=\"true\">NIF:</label>" + 
+									"<label fontsize=\"14\" color=\"#003A8C\"> '11111111-C'</label>" + 
+								"</row>" +		
+							"</content>" + 
+						"</screen>" + 
+					"</screens>"
                     ]); 			
                 });
 				
