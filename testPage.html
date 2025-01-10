@@ -34,9 +34,12 @@
         <input type="button" id="addSerialfilter" value="AddSerialFilter" />
         <input type="button" id="resetCertificateFilters" value="ClearCertificateFilters" />
         <input type="button" id="startdigitalsignature" value="StartDigitalSignature" />
-	<input type="button" id="startdigitalmultisignature" value="StartDigitalMultiSignature" />
+	    <input type="button" id="startdigitalmultisignature" value="StartDigitalMultiSignature" />
         <input type="button" id="configureBSSRemoteProvider" value="Configure Remote Provider" />
         <input type="button" id="resetBSSRemoteProvider" value="Reset Remote Provider" />
+    </div>
+    <div class="container">
+        <input type="button" id="closeWindow" value="Close Window" />
     </div>
     <div class="container">
         <textarea id="messages"></textarea>
@@ -62,6 +65,7 @@
         $('#resetDSSRemoteProvider').prop( "disabled", true );
         $('#configureBSSRemoteProvider').prop( "disabled", true );
         $('#resetBSSRemoteProvider').prop( "disabled", true );
+        $('#closeWindow').prop( "disabled", true );
         checkHub();
 	    
         function checkHub(){ 
@@ -128,6 +132,7 @@
 					$('#resetDSSRemoteProvider').prop( "disabled", false );
 					$('#configureBSSRemoteProvider').prop( "disabled", false );
 					$('#resetBSSRemoteProvider').prop( "disabled", false );
+                    $('#closeWindow').prop( "disabled", false );
                 } else {
                     $('#startsignature').prop( "disabled", true );
 					$('#startenrollment').prop( "disabled", true );
@@ -144,6 +149,7 @@
 					$('#resetDSSRemoteProvider').prop( "disabled", true );
 					$('#configureBSSRemoteProvider').prop( "disabled", true );
                     $('#resetBSSRemoteProvider').prop( "disabled", true );
+                    $('#closeWindow').prop( "disabled", true );
                 }                
             });
 		
@@ -166,6 +172,7 @@
 				$('#resetDSSRemoteProvider').prop( "disabled", false );
 				$('#configureBSSRemoteProvider').prop( "disabled", false );
 				$('#resetBSSRemoteProvider').prop( "disabled", false );
+                $('#closeWindow').prop( "disabled", false );
 
                 $('#setclearimage').click(function(){
                     //hub.server.setClearImageUrl('http://www.cultture.com/pics/2015/12/poil00.jpg');
@@ -343,6 +350,10 @@
 		    
                 $('#resetBSSRemoteProvider').click(function () {
                 	hub.server.setBSSRemoteProviderConfiguration(null, null, null, null);
+                });
+
+                $('#closeWindow').click(function () {
+                	hub.server.closeWindow();
                 });
             });            
         }
