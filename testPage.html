@@ -24,6 +24,7 @@
         <input type="button" id="startsignature" value="Start Signature" />    
         <input type="button" id="configureDSSRemoteProvider" value="Configure Remote Provider" />
         <input type="button" id="resetDSSRemoteProvider" value="Reset Remote Provider" />
+        <input type="button" id="acceptanceWizard" value="Formularios de aceptación" />
     </div>
     <div class="container">    
         <h4>Digital signature</h4>
@@ -66,6 +67,8 @@
         $('#configureBSSRemoteProvider').prop( "disabled", true );
         $('#resetBSSRemoteProvider').prop( "disabled", true );
         $('#closeWindow').prop( "disabled", true );
+		$('#acceptanceWizard').prop( "disabled", true );
+
         checkHub();
 	    
         function checkHub(){ 
@@ -114,7 +117,12 @@
                 console.log(message);
             };  
 					
-	    $.connection.hub.logging = false;
+            hub.client.AsyncOperationAcceptanceWizardCompleted = function(response){
+                $('#messages').append("AsyncOperationAcceptanceWizardCompleted Response: " + response + "\n");
+                console.log("AsyncOperationAcceptanceWizardCompleted response: " + response + "\n");		
+            };  
+
+	        $.connection.hub.logging = false;
             $.connection.hub.stateChanged(function(change){
                 if (change.newState === $.signalR.connectionState.connected){
                     $('#startsignature').prop( "disabled", false );
@@ -132,7 +140,8 @@
 					$('#resetDSSRemoteProvider').prop( "disabled", false );
 					$('#configureBSSRemoteProvider').prop( "disabled", false );
 					$('#resetBSSRemoteProvider').prop( "disabled", false );
-                    $('#closeWindow').prop( "disabled", false );
+                    $('#closeWindow').prop( "disabled", false );                    
+				    $('#acceptanceWizard').prop( "disabled", false);
                 } else {
                     $('#startsignature').prop( "disabled", true );
 					$('#startenrollment').prop( "disabled", true );
@@ -149,7 +158,8 @@
 					$('#resetDSSRemoteProvider').prop( "disabled", true );
 					$('#configureBSSRemoteProvider').prop( "disabled", true );
                     $('#resetBSSRemoteProvider').prop( "disabled", true );
-                    $('#closeWindow').prop( "disabled", true );
+                    $('#closeWindow').prop( "disabled", true );                    
+				    $('#acceptanceWizard').prop( "disabled", false);
                 }                
             });
 		
@@ -173,6 +183,7 @@
 				$('#configureBSSRemoteProvider').prop( "disabled", false );
 				$('#resetBSSRemoteProvider').prop( "disabled", false );
                 $('#closeWindow').prop( "disabled", false );
+				$('#acceptanceWizard').prop( "disabled", false);
 
                 $('#setclearimage').click(function(){
                     //hub.server.setClearImageUrl('http://www.cultture.com/pics/2015/12/poil00.jpg');
@@ -289,50 +300,50 @@
 				
 				$('#startdigitalmultisignature').click(function () {
 					hub.server.digitalMultiSign(
-					["demo://C:/Users/Test/Documents/Documentation/DOCUMENTOS DE PRUEBA/Firmados/reintegro_1601.pdf&FileName=reintegro_1601"],
-					["http://localhost:8733/SealSignDSSService/DistributedSignatureServiceBasic.svc/BB", // 1: URL del servicio
-					null, // 9: Usuario de autenticacion basica
-					null] // 10: Contraseña de autenticacion basica
+					    ["demo://C:/Users/Test/Documents/Documentation/DOCUMENTOS DE PRUEBA/Firmados/reintegro_1601.pdf&FileName=reintegro_1601"],
+					    ["http://localhost:8733/SealSignDSSService/DistributedSignatureServiceBasic.svc/BB", // 1: URL del servicio
+					    null, // 9: Usuario de autenticacion basica
+					    null] // 10: Contraseña de autenticacion basica
 					); 
-						});
+                });
 						
 				$('#startenrollment').click(function () {
 					hub.server.bioEnrollment([
-								"http://localhost:8733/SealSignBASService/BiometricAuthenticationServiceBasic.svc/BB", // 0: URL del servicio
-					"http://localhost/BSSWebTestClient/pageOK.html", // 1: URL de exito
-					"http://localhost/BSSWebTestClient/pageKO.html", // 2: URL de error
-					"http://localhost/BSSWebTestClient/pageCANCEL.html", // 3: URL de cancelacion
-					null, // 4: Usuario de autenticacion basica del servicio
-					null, // 5: Contraseña de autenticacion basica del servicio
-					"11111111-C", // 6: Usuario al que se le hara el enrollment (Opcional)
-					"Cancelar", // 7: Botón Cancelar - en todas las pantallas
-					"Borrar", // 8: Botón Borrar – en todas las pantallas
-					"Firmar", // 9: Botón Guardar – en todas las pantallas
-					"{" + // 10: Tipo de letra y tamaño de las pantallas de firma 
-						"\"fontfamily\":\"TelefonicaWeb-Regular\", " +
-						"\"fontsize\":\"16\", " +
-						"\"fontcolor\":\"#0b4485\", " +
-						"\"windowwidth\":\"800\", " +
-						"\"windowheight\":\"480\", " +
-						"\"backgroundcolor\":\"#FFFBBB\""+
-					"}", 
-					"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + // 11: Pantalla de Enrollment
-					"<screens>" + 
-						"<screen id=\"screen1\">" + 
-							"<title align=\"center\" color=\"#FF0000\" fontsize=\"18\" spacelines=\"15\">ENROLLMENT PRESENCIAL</title>" +
-							"<logo>https://www.toshibatec-tsis.com/soluciones/imagenes/sealsign-logo.png</logo>" +
-							"<content>" + 
-								"<row align=\"left\" spacelines=\"10\">" +
-									"<label fontsize=\"14\" color=\"#003A8C\" bold=\"true\">TITULAR:</label>" + 
-									"<label fontsize=\"14\" color=\"#003A8C\"> Usurio Prueba</label>" + 
-								"</row>" +		
-								"<row align=\"left\" spacelines=\"1\">" +
-									"<label fontsize=\"14\" color=\"#003A8C\" bold=\"true\">NIF:</label>" + 
-									"<label fontsize=\"14\" color=\"#003A8C\"> '11111111-C'</label>" + 
-								"</row>" +		
-							"</content>" + 
-						"</screen>" + 
-					"</screens>"
+                        "http://localhost:8733/SealSignBASService/BiometricAuthenticationServiceBasic.svc/BB", // 0: URL del servicio
+					    "http://localhost/BSSWebTestClient/pageOK.html", // 1: URL de exito
+					    "http://localhost/BSSWebTestClient/pageKO.html", // 2: URL de error
+					    "http://localhost/BSSWebTestClient/pageCANCEL.html", // 3: URL de cancelacion
+					    null, // 4: Usuario de autenticacion basica del servicio
+					    null, // 5: Contraseña de autenticacion basica del servicio
+					    "11111111-C", // 6: Usuario al que se le hara el enrollment (Opcional)
+					    "Cancelar", // 7: Botón Cancelar - en todas las pantallas
+					    "Borrar", // 8: Botón Borrar – en todas las pantallas
+					    "Firmar", // 9: Botón Guardar – en todas las pantallas
+					    "{" + // 10: Tipo de letra y tamaño de las pantallas de firma 
+						    "\"fontfamily\":\"TelefonicaWeb-Regular\", " +
+						    "\"fontsize\":\"16\", " +
+						    "\"fontcolor\":\"#0b4485\", " +
+						    "\"windowwidth\":\"800\", " +
+						    "\"windowheight\":\"480\", " +
+						    "\"backgroundcolor\":\"#FFFBBB\""+
+					    "}", 
+					    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + // 11: Pantalla de Enrollment
+					    "<screens>" + 
+                            "<screen id=\"screen1\">" + 
+                                "<title align=\"center\" color=\"#FF0000\" fontsize=\"18\" spacelines=\"15\">ENROLLMENT PRESENCIAL</title>" +
+                                "<logo>https://www.toshibatec-tsis.com/soluciones/imagenes/sealsign-logo.png</logo>" +
+                                "<content>" + 
+                                    "<row align=\"left\" spacelines=\"10\">" +
+                                        "<label fontsize=\"14\" color=\"#003A8C\" bold=\"true\">TITULAR:</label>" + 
+                                        "<label fontsize=\"14\" color=\"#003A8C\"> Usurio Prueba</label>" + 
+                                    "</row>" +		
+                                    "<row align=\"left\" spacelines=\"1\">" +
+                                        "<label fontsize=\"14\" color=\"#003A8C\" bold=\"true\">NIF:</label>" + 
+                                        "<label fontsize=\"14\" color=\"#003A8C\"> '11111111-C'</label>" + 
+                                    "</row>" +		
+                                "</content>" + 
+                            "</screen>" + 
+					    "</screens>"
                     ]); 			
                 });
 				
@@ -355,6 +366,89 @@
                 $('#closeWindow').click(function () {
                 	hub.server.closeWindow();
                 });
+
+                $('#acceptanceWizard').off().click(function () {
+					hub.server.startAcceptanceWizard([
+						"Nombre del documento", // 0: Titulo de la vista de aceptacion
+						"documento.pdf", // 1: Identificador
+						"Paso", // 2: Label etiqueta Paso
+						"de", // 3: Label etiqueta de
+						"Continuar", // 4: Botón Continuar -  en todas las pantallas
+						"Cancelar", // 5: Botón Cancelar – en todas las pantallas
+						"Finalizar", // 6: Botón Finalizar – en las pantallas de aceptación
+						"Por favor, firme en la pantalla inferior", // 7: Texto OPCIONAL superior en la pantalla de firma
+						"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + // 8: Pantallas del formulario de aceptación
+						"<screens>" +
+							"<screen id=\"screen1\">" +
+								"<text id=\"Label1\">" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\">Al realizar la firma autoriza expresamente:</label>" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\"> * El contenido del documento</label>" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\"> * El pago por importe de 1000 euros</label>" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\"> * El requerimiento de documentación no presentada</label>" +
+								"</text>" +
+								"<checkbox id=\"chk1\" mandatory=\"0\">" +
+									"<label color=\"#003A8C\">Texto de prueba</label>" +
+									"<hint>Acepto</hint>" +
+									"<value>0</value>" +
+								"</checkbox>" +
+								"<text id=\"Label2\">" +
+									"<label></label>" +
+									"<label color=\"#003A8C\" fontsize=\"12\" fontfamily=\"Arial\">Se va a generar su firma electrónica sobre el documento</label>" +
+								"</text>" +
+							"</screen>" +
+							"<screen id=\"screen2\">" +
+								"<text id=\"Label1\">" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\">Al realizar la firma autoriza expresamente:</label>" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\"> * El contenido del documento</label>" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\"> * El pago por importe de 1000 euros</label>" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\"> * El requerimiento de documentación no presentada</label>" +
+								"</text>" +
+								"<checkbox id=\"chk1\" mandatory=\"1\" size=\"medium\" >" +
+									"<label color=\"#003A8C\">Texto de prueba</label>" +
+									"<hint>Acepto</hint>" +
+									"<value>0</value>" +
+								"</checkbox>" +
+								"<checkbox id=\"chk2\" mandatory=\"1\" size=\"large\" >" +
+									"<label color=\"#003A8C\">Test check 2</label>" +
+									"<hint>Acepto</hint>" +
+									"<value>1</value>" +
+								"</checkbox>" +
+								"<text id=\"Label2\">" +
+									"<label></label>" +
+									"<label color=\"#003A8C\" fontsize=\"12\" fontfamily=\"Arial\">Se va a generar su firma electrónica sobre el documento</label>" +
+								"</text>" +
+							"</screen>" +
+							"<screen id=\"screen3\">" +
+								"<text id=\"Label1\">" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\">Al realizar la firma autoriza expresamente:</label>" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\"> * El contenido del documento</label>" +
+									"<label color=\"#003A8C\" fontsize=\"14\" fontfamily=\"Courier New\"> * El pago por importe de 1000 euros</label>" +
+								"</text>" +
+								"<checkbox id=\"chk1\" mandatory=\"1\" size=\"small\" >" +
+									"<label color=\"#003A8C\">Acepto Terminos y condiciones</label>" +
+									"<hint>Acepto</hint>" +
+									"<value>0</value>" +
+								"</checkbox>" +
+								"<checkbox id=\"chk2\" mandatory=\"0\" size=\"medium\" >" +
+									"<label color=\"#003A8C\">Acepto politica de privacidad</label>" +
+									"<hint>Acepto</hint>" +
+									"<value>0</value>" +
+								"</checkbox>" +
+								"<checkbox id=\"chk3\" mandatory=\"1\" size=\"large\" >" +
+									"<label color=\"#003A8C\">Acepto contrato</label>" +
+									"<hint>Acepto</hint>" +
+									"<value>0</value>" +
+								"</checkbox>" +
+								"<text id=\"Label2\">" +
+									"<label></label>" +
+									"<label color=\"#003A8C\" fontsize=\"12\" fontfamily=\"Arial\">Se va a generar su firma electrónica sobre el documento</label>" +
+								"</text>" +
+							"</screen>" +
+						"</screens>",
+						"{\"fontfamily\":\"TelefonicaWeb-Regular\", \"fontsize\":\"16\", \"windowwidth\":\"600\", \"windowheight\":\"480\", \"backgroundcolor\":\"#FFFFFF\", \"fontcolor\":\"#0b4485\"  }" // 9: Tipo de letra y tamaño de las pantallas de firma 
+					]);
+                });
+
             });            
         }
     </script>
